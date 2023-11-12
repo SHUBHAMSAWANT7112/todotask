@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
+
 export class TaskService {
   baseUrl!: string;
   constructor(private http: HttpClient) {
@@ -18,10 +20,14 @@ export class TaskService {
   getAllTask(): Observable<Task[]> {
     return this.http.get<Task[]>(this.baseUrl);
   }
-  delete(todo:Task): Observable<Task[]> {
-    return this.http.delete<Task[]>(this.baseUrl + '/' + todo.id);
+  delete(task:Task): Observable<Task[]> {
+    return this.http.delete<Task[]>(this.baseUrl + '/' + task.id);
   }
-  editTask(todo:Task): Observable<Task[]> {
-    return this.http.delete<Task[]>(this.baseUrl + '/' + todo.id );
+  // editTask(task:Task): Observable<Task[]> {
+  //   return this.http.post<Task>(this.baseUrl + '/' + task.id , task);
+  // }
+  editTask(task: Task): Observable<Task> {
+    return this.http.put<Task>(this.baseUrl + '/' + task.id , task);
   }
 }
+  

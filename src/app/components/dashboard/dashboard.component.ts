@@ -12,11 +12,13 @@ export class DashboardComponent implements OnInit {
   taskArr: Task[] = [];
   editTaskData: string = '';
   addTaskData: string = '';
-
+  searchTask: string = ''
+   task : string = ''; 
   constructor(private api: TaskService) {}
 
   ngOnInit(): void {
     this.editTaskData = '';
+    this.searchTask = ''
     this.addTaskData = '';
     this.taskObj = new Task();
     this.getAllTask();
@@ -36,14 +38,13 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllTask() {
-    this.api.getAllTask().subscribe(
-      (res) => {
-        this.taskArr = res;
+    this.taskObj.task = this.searchTask;
+    this.api.getAllTask().subscribe({
+      next: (v) => {
+        this.taskArr = v;
+        console.log(this.taskArr);
       },
-      (err) => {
-        alert('Unable to find tasks');
-      }
-    );
+    });
   }
 
   editTask() {
@@ -73,5 +74,9 @@ export class DashboardComponent implements OnInit {
   callEdit(task: Task) {
     this.taskObj = task;
     this.editTaskData = task.task;
+  }
+
+  searchData(){
+    this.getAllTask()
   }
 }

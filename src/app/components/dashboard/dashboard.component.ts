@@ -10,10 +10,16 @@ import { TaskService } from 'src/app/services/task.service';
 export class DashboardComponent implements OnInit {
   taskObj: Task = new Task();
   taskArr: Task[] = [];
+  
   editTaskData: string = '';
   addTaskData: string = '';
   searchTask: string = ''
    task : string = ''; 
+   searchTable: string = '';
+   searchResult : any = [];
+   filteredTaskArr: Task[] = [];
+
+
   constructor(private api: TaskService) {}
 
   ngOnInit(): void {
@@ -42,6 +48,7 @@ export class DashboardComponent implements OnInit {
     this.api.getAllTask().subscribe({
       next: (v) => {
         this.taskArr = v;
+        this.applyFilter();
         console.log(this.taskArr);
       },
     });
@@ -76,7 +83,28 @@ export class DashboardComponent implements OnInit {
     this.editTaskData = task.task;
   }
 
-  searchData(){
-    this.getAllTask()
+
+
+  // applyFilter() {
+  //   if (this.searchTable.trim() !== '') {
+  //     this.filteredTaskArr = this.taskArr.filter(
+  //       (data) =>
+  //       data.task.toLowerCase().includes(this.searchTable.toLowerCase())
+  //     );
+  //   } else {
+  //     this.filteredTaskArr = this.taskArr;
+  //   }
+  // }
+
+  applyFilter(){
+    if (this.searchTable.trim() !== '') {
+      this.filteredTaskArr = this.taskArr.filter(
+        (data) =>(
+          data.task.toLowerCase().includes(this.searchTable.toLowerCase())
+        )
+      )
+    }else{
+      this.filteredTaskArr = this.taskArr
+    }
   }
 }
